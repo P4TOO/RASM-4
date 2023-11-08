@@ -115,6 +115,7 @@ addStringKeyEnd:
 	mov x3, x22		//x3(nodeCount) = x22(updatedCount)
 	
 	LDR X30, [SP], #16	//POP	LR
+	LDR X23, [SP], #16  //POP
 	LDR X22, [SP], #16	//POP
 	LDR X21, [SP], #16	//POP
 	LDR X20, [SP], #16	//POP
