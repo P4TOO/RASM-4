@@ -9,6 +9,7 @@
 // Pre-requisites:
 // x0 contains fd
 // x1 contains *buf
+// x2 contains *fd
 // Returns:
 //******************************************************************
 	.global getLine
@@ -18,7 +19,7 @@ szERROR:		.asciz "FILE READ ERROR\n"
 	.text
 getLine:
 	STR X30, [SP, #-16]!		//PUSH LR
-	mov x19, x0		//x19 = address iFD
+	mov x19, x2		//x19 = address iFD
 	
 top:
 	bl getChar
@@ -42,7 +43,7 @@ top:
 	b top
 	
 eoline:
-	add x1,x1,#1	//We are going to make fileBuf into a c-string
+	//add x1,x1,#1	//We are going to make fileBuf into a c-string
 	mov w2,#0		// by store null at the end of fileBuf (i.e. "Cat int hat.\0")
 	strb w2,[x1]
 	b skip
