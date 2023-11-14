@@ -15,6 +15,7 @@
 	.global displayList
 	.data
 chLF:			.byte 0xa
+szEmpty:		.asciz	"The list is empty\n"
 	.text
 displayList:
 	STR x20, [SP, #-16]!	//PUSH
@@ -24,6 +25,8 @@ displayList:
 		
 	//x0 contains address headPtr
 	ldr x0,[x0]				//x0 = *x0
+	cmp x0, #0				//If headPtr == null
+	beq empty				//List is Empty!
 	
 	//x1 contains address currentNode
 	//currentNode = headPtr
@@ -53,6 +56,11 @@ iterateList:
 	mov x0,x1				//x0 = x1
 	
 	b iterateList
+	
+empty:
+	//Print "The list is empty\n" 
+	ldr x0,=szEmpty
+	bl putstring
 	
 iterateDone:
 	LDR X30, [SP], #16		//POP LR

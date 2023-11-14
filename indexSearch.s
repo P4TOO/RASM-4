@@ -14,6 +14,8 @@
 //		x2 - targetIndex
 // Output:
 //		(pointers set to node that matches index)
+//		x3 - Index where node was found
+//		x4 - tailCurrent
 //*****************************************************************
 	.global indexSearch
 	.data
@@ -25,6 +27,7 @@ indexSearch:
 	STR X20, [SP, #-16]!	//PUSH
 	STR X21, [SP, #-16]!	//PUSH
 	STR X22, [SP, #-16]!	//PUSH
+	STR X23, [SP, #-16]!	//PUSH
 	STR X30, [SP, #-16]!	//PUSH LR
 	
 	//conserve paramters
@@ -32,6 +35,8 @@ indexSearch:
 	mov x20, x1		//x20 = *currentNode
 	mov x21, x2		//x21 = targetIndex
 	mov x22, #0		//x22(currentIndex) = 0
+	sub x6, x21, #1	//Used to keep track of tailCurrent 
+					//(x6 = targetIndex - 1)
 		
 	//x0 contains address headPtr
 	ldr x0,[x0]				//x0 = *x0
@@ -49,6 +54,11 @@ iterateList:
 	cmp x22,x21
 	beq found
 	
+	cmp x6, x22				//If (x6(targetTail) != x22(currentIndex))
+	bne notTail				//Skip to notTail
+	//ldr x5,[x0]	
+	mov x23,x0				//This is the tailCurrent
+notTail:
 	//currentNode = currentNode->next
 	mov x1, x20				//x1 = currentNode
 	ldr x1,[x1]				//x1 = *x1
@@ -68,8 +78,10 @@ iterateDone:
 	mov x22, #0
 found:
 	mov x3, x22		//Index where node was found (If 0 notfound)
+	mov x4, x23		//x4 = tailCurrent
 	
 	LDR X30, [SP], #16		//POP LR
+	LDR X23, [SP], #16		//POp
 	LDR X22, [SP], #16		//POP
 	LDR X21, [SP], #16		//POP
 	LDR X20, [SP], #16		//POP
