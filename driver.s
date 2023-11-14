@@ -12,7 +12,6 @@
 //*****************************************************************
 	.global _start
 	.equ	MAXKB,	1024
-      	.equ MAX_BYTES, 21
 	.equ R,	 		0
 	.equ W,	 		01
 	.equ RW, 		02
@@ -25,6 +24,7 @@
 	.data
 //General variables
 fileName: 		.asciz "input.txt"
+outName:		.asciz "output.txt"
 kdBuf:			.skip		MAXKB
 strTemp:		.skip 21	//Use as an string buffer
 chLF:			.byte 0xa	//Use for "\n"
@@ -205,6 +205,9 @@ invalidOption:
 	
 	cmp w0, '4'
 	beq option4
+	
+	cmp w0, '6'
+	beq option6
 	
 	cmp w0, '7'
 	beq exit
@@ -411,6 +414,23 @@ option4:
 	bl putch
 	
 	b newOption				//return to menu
+
+//==================================================================
+//Option Save File (output.txt)
+//-------------------------------------
+option6:
+	//Set parameters saveFile
+	ldr x0,=headPtr			//x0 = *headPtr
+	ldr x1,=currentNode		//x1 = *currentNode
+	ldr x2,=outName			//x2 = *outName (Output file)
+	bl saveFile				//Prints all string to output file
+
+	//Print LF
+	ldr x0,=chLF
+	bl putch
+	
+	b newOption				//return to menu
+
 
 exit:
    // Setup the parameters to exit the program

@@ -56,18 +56,28 @@ deleteString:
 	beq notFound	//found
 	
 	//trailCurrent->next = current->next
-	ldr x5,[x20]			//x5 = **currentNode
+	mov x5, x20				// x1 = currentNode->next
+	//ldr x5,[x5]
 	ldr x1,=tailCurrent		//x1 = *tailCurrent
-	str x5,[x1]				// **tailCurrent = **currentNode
+	//ldr x1,[x1]
+	str x5,[x1]				// *tailCurrent->next = *currentNode->next
+	mov x1, x5
 	sub x23,x23,#1			//nodeCount--
 	
-	ldr x1,=tailCurrent		//x1 = *tailCurrent
-	ldr x1,[x1]				//x1 = tailCurrent
-	str x1,[x22]			//tail = tailCurrent
+	
+	ldr x1,[x20]				//x1 = currentNode
+	ldr x2,[x22]
+	cmp x1,x2
+	bne notSame
+	//ldr x1,=tailCurrent		//x1 = *tailCurrent
+	//ldr x1,[x1]				//x1 = tailCurrent
+	//str x1,[x22]			//tail = tailCurrent
+notSame:
 	
 	ldr x0,[x20]
 	ldr x0,[x0]
-	bl free					//Delete currentNode
+	bl free					//Delete string
+
 	
 	b editDone
 notFound:

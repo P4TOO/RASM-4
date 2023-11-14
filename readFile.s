@@ -20,8 +20,9 @@
 //		
 //*****************************************************************
 	.global readFile
+	.equ	MAXKB,	1024
 	.data
-fileBuf:	.skip 21
+fileBuf:	.skip MAXKB
 iFD:		.byte 0
 	.text
 readFile:

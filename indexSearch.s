@@ -35,7 +35,7 @@ indexSearch:
 	mov x20, x1		//x20 = *currentNode
 	mov x21, x2		//x21 = targetIndex
 	mov x22, #0		//x22(currentIndex) = 0
-	sub x6, x21, #1	//Used to keep track of tailCurrent 
+	sub x6, x21, #2	//Used to keep track of tailCurrent 
 					//(x6 = targetIndex - 1)
 		
 	//x0 contains address headPtr
@@ -56,8 +56,9 @@ iterateList:
 	
 	cmp x6, x22				//If (x6(targetTail) != x22(currentIndex))
 	bne notTail				//Skip to notTail
-	//ldr x5,[x0]	
-	mov x23,x0				//This is the tailCurrent
+	//ldr x5,[x0]
+	ldr x7,[x20]			//x7 = currentNode	
+	mov x23,x7				//This is the tailCurrent
 notTail:
 	//currentNode = currentNode->next
 	mov x1, x20				//x1 = currentNode
